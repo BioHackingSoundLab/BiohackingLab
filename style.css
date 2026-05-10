@@ -1,120 +1,118 @@
-/* Основни цветове и ресет */
-:root {
-    --bg-color: #0b0f19; /* Тъмен фон от твоята картинка */
-    --neon-blue: #00f3ff;
-    --neon-green: #00ff66;
-    --text-light: #ffffff;
-    --text-dim: #8b9bb4;
-}
+/* --- НОВ ДИЗАЙН ЗА МОДУЛИТЕ И МЕНЮТАТА --- */
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-light);
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.app-container {
+.view-section {
+    display: none;
     width: 100%;
-    max-width: 500px; /* Размер като за мобилно приложение */
-    height: 100%;
-    display: flex;
     flex-direction: column;
-    padding: 20px;
-    text-align: center;
-}
-
-/* Хедър и Лого */
-.header {
-    margin-bottom: 30px;
-    margin-top: 20px;
-}
-
-.logo-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-}
-
-.neon-blue {
-    color: var(--neon-blue);
-    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-}
-
-.subtitle {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    margin-top: 5px;
-    letter-spacing: 1px;
-}
-
-/* Калибриране */
-.calibration-zone {
-    margin-bottom: 30px;
-}
-
-.status-indicator {
-    display: inline-block;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border: 1px solid transparent;
-}
-
-.status-indicator.yellow {
-    color: #ffaa00;
-    border-color: #ffaa00;
-    box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
-}
-
-/* Караоке Зона */
-.karaoke-zone {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-.prompt-text {
-    font-size: 1.4rem;
-    line-height: 1.5;
-    min-height: 100px;
-    margin: 20px 0;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+.view-section.active {
+    display: flex;
 }
 
-/* Бутони */
-.controls {
-    margin-bottom: 30px;
+.intro-box {
+    background: rgba(0, 243, 255, 0.05);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: left;
 }
 
-.btn {
-    background: transparent;
-    color: var(--neon-blue);
+.intro-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.neon-green {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+}
+
+.intro-box p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+}
+
+.section-title {
+    align-self: flex-start;
+    margin-bottom: 15px;
+    color: var(--text-light);
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    padding: 15px 30px;
-    border: 2px solid var(--neon-blue);
-    border-radius: 30px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.1);
 }
 
-.btn:active {
-    background: var(--neon-blue);
-    color: var(--bg-color);
+.modules-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
+
+.module-card {
+    background: #121826;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.module-card.unlocked {
+    border: 1px solid var(--neon-blue);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+}
+
+.module-card.unlocked:hover {
+    background: rgba(0, 243, 255, 0.1);
+}
+
+.module-card.locked {
+    border: 1px solid #2a3441;
+    opacity: 0.7;
+}
+
+.module-icon {
+    font-size: 2rem;
+    margin-right: 15px;
+}
+
+.module-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.module-info h4 {
+    margin-bottom: 5px;
+    color: var(--text-light);
+}
+
+.module-info p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.module-status {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.module-card.unlocked .module-status {
+    color: var(--neon-blue);
+}
+
+.back-btn {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+.back-btn:hover { color: var(--text-light); }
+
+.hidden { display: none !important; }
