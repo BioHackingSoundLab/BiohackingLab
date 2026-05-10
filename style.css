@@ -1,19 +1,15 @@
 :root {
-    --bg-dark: #05070a;
-    --card-bg: rgba(15, 22, 36, 0.7);
-    --neon-blue: #00f3ff;
-    --neon-green: #00ff66;
-    --neon-purple: #bc13fe;
+    --bg: #05070a;
+    --card: #0f1624;
+    --blue: #00f3ff;
+    --purple: #bc13fe;
     --text: #e0e6ed;
 }
 
-body {
-    background-color: var(--bg-dark);
-    color: var(--text);
-    font-family: 'Roboto', sans-serif;
-    margin: 0; padding: 0;
-    background: radial-gradient(circle at top right, #0a192f 0%, #05070a 100%);
-    height: 100vh; overflow: hidden;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { 
+    background: var(--bg); color: var(--text); font-family: 'Roboto', sans-serif; 
+    margin: 0; height: 100vh; overflow: hidden;
 }
 
 .app-container {
@@ -21,47 +17,39 @@ body {
     display: flex; flex-direction: column; padding: 15px;
 }
 
+.logo-text { font-family: 'Orbitron'; font-size: 1.4rem; text-align: center; margin: 15px 0; }
+.neon-blue { color: var(--blue); text-shadow: 0 0 10px var(--blue); }
+
 /* Навигация */
-.main-nav {
-    display: flex; gap: 10px; margin-bottom: 20px;
-}
-
+.main-nav { display: flex; gap: 8px; margin-bottom: 20px; }
 .nav-btn {
-    flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text); padding: 12px 5px; border-radius: 10px;
-    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; cursor: pointer;
-    transition: 0.3s;
+    flex: 1; background: #1a2233; border: 1px solid #333; color: #888;
+    padding: 12px 5px; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.65rem;
+    cursor: pointer; transition: 0.3s;
 }
+.nav-btn.active { border-color: var(--blue); color: var(--blue); box-shadow: 0 0 10px rgba(0,243,255,0.2); }
 
-.nav-btn.active {
-    border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-}
-
-/* Секции */
-.tab-content { display: none; animation: fadeIn 0.5s; }
-.tab-content.active { display: block; }
+/* Скриване/Показване на табове */
+.tab-content { display: none; width: 100%; }
+.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Райф Карти */
-.rife-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.rife-card {
-    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 15px; padding: 20px; color: white; cursor: pointer;
+/* Карти */
+.module-card, .rife-card {
+    background: var(--card); border: 1px solid #222; border-radius: 12px;
+    padding: 15px; margin-bottom: 12px; cursor: pointer;
 }
-.rife-card:active { border-color: var(--neon-purple); }
+.rife-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rife-card { text-align: center; padding: 20px 10px; }
+.emoji { font-size: 1.5rem; display: block; margin-bottom: 8px; }
 
 /* Скенер */
-#visualizerCanvas { width: 100%; height: 150px; background: rgba(0,0,0,0.3); border-radius: 10px; }
-.frequency-display { font-size: 3rem; font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin: 20px 0; }
+#scannerCanvas { width: 100%; height: 120px; background: #000; border-radius: 10px; }
+.freq-val { font-family: 'Orbitron'; font-size: 2.5rem; color: var(--blue); margin: 15px 0; text-align: center; }
+.monitor { margin-top: 10px; color: var(--purple); font-weight: bold; text-align: center; }
 
-/* Overlay */
-.overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.95); z-index: 100; display: flex; justify-content: center; align-items: center;
-}
-.hidden { display: none !important; }
 .btn {
-    background: none; border: 2px solid var(--neon-blue); color: var(--neon-blue);
-    padding: 15px 30px; border-radius: 30px; font-family: 'Orbitron'; cursor: pointer;
+    width: 100%; padding: 15px; background: none; border: 2px solid var(--blue);
+    color: var(--blue); border-radius: 30px; font-family: 'Orbitron'; cursor: pointer;
 }
