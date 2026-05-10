@@ -2,10 +2,10 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BioHacking Sound Lab</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
@@ -14,65 +14,45 @@
         </header>
 
         <nav class="main-nav">
-            <button class="nav-btn active" onclick="switchTab('lab')">ПРОТОКОЛИ</button>
-            <button class="nav-btn" onclick="switchTab('rife')">РАЙФ</button>
-            <button class="nav-btn" onclick="switchTab('scanner')">СКЕНЕР</button>
+            <button class="nav-btn active" data-tab="lab">ПРОТОКОЛИ</button>
+            <button class="nav-btn" data-tab="rife">РАЙФ</button>
+            <button class="nav-btn" data-tab="scanner">СКЕНЕР</button>
         </nav>
 
         <main class="content-area">
-            <section id="lab-tab" class="tab-content active">
-                <div class="intro-box">
-                    <h2>Невро-Програмиране</h2>
-                    <p>Смеси своя глас с Тета вълни и музика за дълбока промяна.</p>
-                </div>
-                <div class="modules-grid" id="protocolsList">
-                    <div class="module-card unlocked" onclick="startProtocol('smoking')">
-                        <div class="module-info">
-                            <h4>Спиране на цигари</h4>
-                            <p>Тета (4Hz) + 528Hz</p>
-                        </div>
-                        <span class="status-icon">▶</span>
+            <div id="lab" class="tab-content active">
+                <div class="module-card unlocked" onclick="openProtocol('smoking')">
+                    <div class="module-info">
+                        <h4>Спиране на цигари</h4>
+                        <p>Тета (4Hz) + 528Hz</p>
                     </div>
-                </div>
-            </section>
-
-            <section id="rife-tab" class="tab-content">
-                <div class="rife-grid">
-                    <button class="rife-card" onclick="playRife(432, 'Detox')">
-                        <span>🧬</span> <h4>Детокс</h4> <small>432 Hz</small>
-                    </button>
-                    <button class="rife-card" onclick="playRife(528, 'DNA Repair')">
-                        <span>✨</span> <h4>ДНК Ремонт</h4> <small>528 Hz</small>
-                    </button>
-                    <button class="rife-card" onclick="playRife(783, 'Schumann')">
-                        <span>🌍</span> <h4>Шуман</h4> <small>7.83 Hz</small>
-                    </button>
-                </div>
-                <div id="rifeStatus" class="rife-monitor">Избери програма</div>
-            </section>
-
-            <section id="scanner-tab" class="tab-content">
-                <div class="scanner-container">
-                    <canvas id="visualizerCanvas"></canvas>
-                    <div class="frequency-display">
-                        <span id="detectedFreq">0</span> <small>Hz</small>
-                    </div>
-                    <p id="freqInfo">Тишина в лабораторията...</p>
-                    <button class="btn neon-btn" id="startScannerBtn">ПУСНИ СКЕНЕРА</button>
-                </div>
-            </section>
-        </main>
-
-        <div id="recordingOverlay" class="overlay hidden">
-            <div class="overlay-content">
-                <button class="close-btn" onclick="closeOverlay()">✕</button>
-                <div id="karaokeText" class="prompt-text">Подготовка...</div>
-                <canvas id="micVisualizer"></canvas>
-                <div class="controls">
-                    <button class="btn neon-btn" id="recordBtn">СТАРТ</button>
+                    <span class="status-icon">▶</span>
                 </div>
             </div>
-        </div>
+
+            <div id="rife" class="tab-content">
+                <div class="rife-grid">
+                    <div class="rife-card" onclick="playFreq(432, 'Детокс')">
+                        <span class="emoji">🧬</span>
+                        <h4>Детокс</h4>
+                        <small>432 Hz</small>
+                    </div>
+                    <div class="rife-card" onclick="playFreq(528, 'Регенерация')">
+                        <span class="emoji">✨</span>
+                        <h4>ДНК</h4>
+                        <small>528 Hz</small>
+                    </div>
+                </div>
+                <div id="rifeStatus" class="monitor">Избери честота</div>
+            </div>
+
+            <div id="scanner" class="tab-content">
+                <canvas id="scannerCanvas"></canvas>
+                <div class="freq-val"><span id="liveFreq">0</span> Hz</div>
+                <p id="freqNote">Скенерът е в готовност...</p>
+                <button class="btn neon-btn" id="toggleScanner">СТАРТ СКЕНЕР</button>
+            </div>
+        </main>
     </div>
     <script src="app.js"></script>
 </body>
