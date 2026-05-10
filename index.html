@@ -5,93 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BioHacking Sound Lab</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Футуристични шрифтове -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-wrapper">
+
+    <!-- Основен контейнер за екраните -->
+    <main id="app-container">
         
-        <header class="top-header">
-            <h1>BioHacking <span class="neon-text">Sound Lab</span></h1>
-        </header>
+        <!-- МОДУЛ 1: ПРОТОКОЛИ -->
+        <section id="view-protocols" class="view active">
+            <header>
+                <h1 class="neon-blue">ПРОТОКОЛИ</h1>
+                <p class="subtitle">Невро-програмиране & 4Hz Тета</p>
+            </header>
+            <div class="glass-card">
+                <p>Тук ще се визуализира текстът за четене и контролите за запис на глас.</p>
+            </div>
+        </section>
 
-        <main class="main-content">
-            
-            <section id="view-protocols" class="app-view active">
-                <div class="glass-panel info-panel">
-                    <h3>Невро-Програмиране</h3>
-                    <p>Пренапиши подсъзнанието си чрез силата на собствения си глас, смесен с 4Hz Тета вълни.</p>
-                </div>
-                
-                <div class="list-container">
-                    <div class="glass-card play-card" onclick="alert('Модулът се зарежда...')">
-                        <div class="card-icon">🚭</div>
-                        <div class="card-text">
-                            <h4>Спиране на цигари</h4>
-                            <span>Протокол: Тета + 528Hz</span>
-                        </div>
-                        <div class="play-btn">▶</div>
-                    </div>
-                </div>
-            </section>
+        <!-- МОДУЛ 2: РАЙФ -->
+        <section id="view-rife" class="view">
+            <header>
+                <h1 class="neon-green">РАЙФ ЩИТ</h1>
+                <p class="subtitle">Генератор на лечебни честоти</p>
+            </header>
+            <div class="glass-card">
+                <p>Тук ще добавим бутоните за Солфеджо (528Hz) и Райф честотите.</p>
+            </div>
+        </section>
 
-            <section id="view-rife" class="app-view">
-                <div class="glass-panel text-center">
-                    <h3 id="rifeMonitor" class="neon-purple">Готовност за резонанс</h3>
-                </div>
-                
-                <div class="grid-container">
-                    <button class="glass-card grid-card" onclick="playFrequency(432, 'Детокс (432Hz)')">
-                        <span class="big-icon">🧬</span>
-                        <h4>Детокс</h4>
-                        <span class="freq-tag">432 Hz</span>
-                    </button>
-                    <button class="glass-card grid-card" onclick="playFrequency(528, 'ДНК Ремонт (528Hz)')">
-                        <span class="big-icon">✨</span>
-                        <h4>ДНК Ремонт</h4>
-                        <span class="freq-tag">528 Hz</span>
-                    </button>
-                    <button class="glass-card grid-card" onclick="playFrequency(783, 'Шуман (7.83Hz)')">
-                        <span class="big-icon">🌍</span>
-                        <h4>Шуман</h4>
-                        <span class="freq-tag">7.83 Hz</span>
-                    </button>
-                    <button class="glass-card grid-card stop-card" onclick="stopAudio()">
-                        <span class="big-icon">⏹️</span>
-                        <h4>СПРИ</h4>
-                        <span class="freq-tag">Всички</span>
-                    </button>
-                </div>
-            </section>
+        <!-- МОДУЛ 3: СКЕНЕР -->
+        <section id="view-scanner" class="view">
+            <header>
+                <h1 class="neon-blue">СКЕНЕР</h1>
+                <p class="subtitle">FFT Анализатор на околната среда</p>
+            </header>
+            <div class="glass-card">
+                <p>Тук ще вградим canvas елемента, който ще чертае звуковите вълни в реално време.</p>
+            </div>
+        </section>
 
-            <section id="view-scanner" class="app-view">
-                <div class="glass-panel scanner-panel">
-                    <canvas id="waveCanvas"></canvas>
-                    <div class="freq-readout">
-                        <span id="hzValue">0</span> <small>Hz</small>
-                    </div>
-                    <p id="scannerStatus">Очаква старт...</p>
-                    <button class="action-btn" id="btnScan" onclick="toggleScanner()">ВКЛЮЧИ СКЕНЕРА</button>
-                </div>
-            </section>
+    </main>
 
-        </main>
+    <!-- Долна Навигация (Glassmorphism) -->
+    <nav id="bottom-nav" class="glass-nav">
+        <button class="nav-btn active" data-target="view-protocols">
+            <span class="icon">🎙️</span>
+            <span class="label">Протоколи</span>
+        </button>
+        <button class="nav-btn" data-target="view-rife">
+            <span class="icon">🎛️</span>
+            <span class="label">Райф</span>
+        </button>
+        <button class="nav-btn" data-target="view-scanner">
+            <span class="icon">📡</span>
+            <span class="label">Скенер</span>
+        </button>
+    </nav>
 
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="switchView('view-protocols', this)">
-                <span class="nav-icon">🎧</span>
-                <span>Протоколи</span>
-            </button>
-            <button class="nav-item" onclick="switchView('view-rife', this)">
-                <span class="nav-icon">🔬</span>
-                <span>Райф</span>
-            </button>
-            <button class="nav-item" onclick="switchView('view-scanner', this)">
-                <span class="nav-icon">📡</span>
-                <span>Скенер</span>
-            </button>
-        </nav>
-
-    </div>
     <script src="app.js"></script>
 </body>
 </html>
