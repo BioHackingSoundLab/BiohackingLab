@@ -5,34 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioHacking Sound Lab</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
+        
         <header class="header">
             <h1 class="logo-text">BioHacking <span class="neon-blue">Sound Lab</span>&trade;</h1>
             <p class="subtitle">Upgrade Your Life</p>
         </header>
 
-        <div class="calibration-zone" id="calibrationZone">
-            <div class="status-indicator yellow" id="micStatus">Изчаквам микрофон...</div>
+        <div id="dashboard" class="view-section active">
+            
+            <div class="intro-box">
+                <h2>Открий своята <span class="neon-green">Невро-свобода</span></h2>
+                <p>Твоето подсъзнание се препрограмира най-добре с твоя собствен глас. Ние не използваме изкуствен интелект. Използваме най-мощния инструмент във Вселената – твоите гласови вибрации, смесени с Тета вълни, за да пренапишем старите навици.</p>
+            </div>
+
+            <h3 class="section-title">Твоите Протоколи</h3>
+            
+            <div class="modules-grid">
+                <div class="module-card unlocked" onclick="openModule('smoking')">
+                    <div class="module-icon">🚭</div>
+                    <div class="module-info">
+                        <h4>Спиране на цигари</h4>
+                        <p>Изчисти навика завинаги</p>
+                    </div>
+                    <div class="module-status">СТАРТ</div>
+                </div>
+
+                <div class="module-card locked">
+                    <div class="module-icon">🍷</div>
+                    <div class="module-info">
+                        <h4>Контрол над алкохола</h4>
+                        <p>Прекъсни зависимостта</p>
+                    </div>
+                    <div class="module-status">🔒 19 лв.</div>
+                </div>
+
+                <div class="module-card locked">
+                    <div class="module-icon">⚡</div>
+                    <div class="module-info">
+                        <h4>Здраве и Енергия</h4>
+                        <p>Клетъчно възстановяване</p>
+                    </div>
+                    <div class="module-status">🔒 19 лв.</div>
+                </div>
+            </div>
         </div>
 
-        <div class="karaoke-zone">
-            <div class="visualizer" id="visualizer">
-                <div class="wave"></div>
-            </div>
+        <div id="recordingStudio" class="view-section hidden">
+            <button class="back-btn" onclick="goBack()">🔙 Назад към модулите</button>
             
-            <div class="prompt-text" id="promptText">
-                Твоето подсъзнание се препрограмира най-добре с твоя собствен глас. Натисни "Старт", за да започнем.
-            </div>
+            <h2 id="currentModuleName" class="neon-blue">Спиране на цигари</h2>
             
-            <div class="timer" id="timerDisplay"></div>
+            <div class="calibration-zone">
+                <div class="status-indicator yellow" id="micStatus">Натисни "Старт", за да тестваме стаята...</div>
+            </div>
+
+            <div class="karaoke-zone">
+                <div class="prompt-text" id="promptText">
+                    Приготви се. Прочети текста, който ще се появи тук, бавно и ясно.
+                </div>
+                <div class="timer" id="timerDisplay"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn neon-btn" id="startBtn">ЗАПОЧНИ ЗАПИС</button>
+            </div>
         </div>
 
-        <div class="controls">
-            <button class="btn neon-btn" id="startBtn">СТАРТ НА ЗАПИСА</button>
-        </div>
     </div>
 
     <script src="app.js"></script>
