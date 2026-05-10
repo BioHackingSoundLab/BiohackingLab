@@ -1,116 +1,67 @@
 :root {
-    --bg-color: #050810;
+    --bg-dark: #05070a;
+    --card-bg: rgba(15, 22, 36, 0.7);
     --neon-blue: #00f3ff;
     --neon-green: #00ff66;
-    --text-light: #ffffff;
-    --text-dim: #8b9bb4;
+    --neon-purple: #bc13fe;
+    --text: #e0e6ed;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
-    background: radial-gradient(circle at center, #0a1128 0%, var(--bg-color) 100%);
-    color: var(--text-light);
+    background-color: var(--bg-dark);
+    color: var(--text);
     font-family: 'Roboto', sans-serif;
-    display: flex; justify-content: center; align-items: center;
+    margin: 0; padding: 0;
+    background: radial-gradient(circle at top right, #0a192f 0%, #05070a 100%);
     height: 100vh; overflow: hidden;
 }
 
 .app-container {
-    width: 100%; max-width: 500px; height: 100%;
-    display: flex; flex-direction: column; padding: 20px; text-align: center;
+    max-width: 500px; margin: 0 auto; height: 100vh;
+    display: flex; flex-direction: column; padding: 15px;
 }
 
-/* Анимации за появяване */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Навигация */
+.main-nav {
+    display: flex; gap: 10px; margin-bottom: 20px;
 }
 
-.view-section {
-    display: none; width: 100%; flex-direction: column; align-items: center;
-    animation: fadeIn 0.4s ease-out forwards;
+.nav-btn {
+    flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text); padding: 12px 5px; border-radius: 10px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.7rem; cursor: pointer;
+    transition: 0.3s;
 }
 
-.view-section.active { display: flex; }
-
-/* Хедър */
-.header { margin-bottom: 25px; margin-top: 15px; }
-.logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; letter-spacing: 2px; }
-.neon-blue { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.6); }
-.neon-green { color: var(--neon-green); text-shadow: 0 0 10px rgba(0, 255, 102, 0.6); }
-.subtitle { color: var(--text-dim); font-size: 0.9rem; letter-spacing: 1px; }
-
-/* Картите за модули */
-.intro-box {
-    background: rgba(0, 243, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.15);
-    border-radius: 15px; padding: 20px; margin-bottom: 25px; text-align: left;
-}
-.intro-box h2 { font-size: 1.4rem; margin-bottom: 10px; }
-.intro-box p { font-size: 0.9rem; line-height: 1.5; color: var(--text-dim); }
-
-.modules-grid { width: 100%; display: flex; flex-direction: column; gap: 15px; }
-
-.module-card {
-    background: rgba(18, 24, 38, 0.8); border-radius: 12px; padding: 15px;
-    display: flex; align-items: center; justify-content: space-between;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+.nav-btn.active {
+    border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
 }
 
-.module-card.unlocked {
-    border: 1px solid rgba(0, 243, 255, 0.4); cursor: pointer;
-}
-.module-card.unlocked:hover {
-    background: rgba(0, 243, 255, 0.1); transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);
-}
-.module-card.locked { border: 1px solid #1a2233; opacity: 0.5; }
+/* Секции */
+.tab-content { display: none; animation: fadeIn 0.5s; }
+.tab-content.active { display: block; }
 
-.module-icon { font-size: 2rem; margin-right: 15px; }
-.module-info { flex-grow: 1; text-align: left; }
-.module-info h4 { margin-bottom: 3px; color: var(--text-light); }
-.module-info p { font-size: 0.8rem; color: var(--text-dim); }
-.module-status { font-weight: bold; font-size: 0.9rem; }
-.module-card.unlocked .module-status { color: var(--neon-blue); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Зона за Запис и Караоке */
-.back-btn {
-    align-self: flex-start; background: none; border: none;
-    color: var(--text-dim); cursor: pointer; font-size: 1rem; margin-bottom: 20px;
-    transition: color 0.3s;
+/* Райф Карти */
+.rife-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.rife-card {
+    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 15px; padding: 20px; color: white; cursor: pointer;
 }
-.back-btn:hover { color: var(--text-light); }
+.rife-card:active { border-color: var(--neon-purple); }
 
-.calibration-zone { margin: 20px 0; }
-.status-indicator {
-    display: inline-block; padding: 8px 15px; border-radius: 20px;
-    font-size: 0.9rem; font-weight: bold; transition: all 0.3s;
+/* Скенер */
+#visualizerCanvas { width: 100%; height: 150px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+.frequency-display { font-size: 3rem; font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin: 20px 0; }
+
+/* Overlay */
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); z-index: 100; display: flex; justify-content: center; align-items: center;
 }
-
-.karaoke-zone {
-    flex-grow: 1; display: flex; flex-direction: column;
-    justify-content: center; align-items: center; min-height: 200px;
-}
-
-.prompt-text {
-    font-size: 1.5rem; line-height: 1.4; text-align: center;
-    transition: opacity 0.5s ease; /* Плавно сменяне на текста */
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-}
-
-/* Пулсиращ Бутон */
-@keyframes pulseGlow {
-    0% { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
-    50% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.6); }
-    100% { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
-}
-
+.hidden { display: none !important; }
 .btn {
-    background: transparent; color: var(--neon-blue);
-    font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
-    padding: 15px 30px; border: 2px solid var(--neon-blue);
-    border-radius: 30px; cursor: pointer; text-transform: uppercase;
-    transition: all 0.3s ease; animation: pulseGlow 2s infinite;
+    background: none; border: 2px solid var(--neon-blue); color: var(--neon-blue);
+    padding: 15px 30px; border-radius: 30px; font-family: 'Orbitron'; cursor: pointer;
 }
-.btn:hover { background: rgba(0, 243, 255, 0.1); }
-.btn:active { background: var(--neon-blue); color: var(--bg-color); }
