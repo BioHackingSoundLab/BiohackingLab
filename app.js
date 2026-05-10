@@ -1,62 +1,108 @@
-// Навигация
-function openModule(moduleId) {
-    document.getElementById('dashboard').classList.remove('active');
-    document.getElementById('recordingStudio').classList.add('active');
+let audioCtx;
+let mainOscillator;
+let analyzer;
+let isScannerRunning = false;
+
+// 1. ПРЕВКЛЮЧВАНЕ НА ТАБОВЕ
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId + '-tab').classList.add('active');
+    event.currentTarget.classList.add('active');
 }
 
-function goBack() {
-    document.getElementById('recordingStudio').classList.remove('active');
-    document.getElementById('dashboard').classList.add('active');
-}
-
-// Караоке Логика
-const startBtn = document.getElementById('startBtn');
-const promptText = document.getElementById('promptText');
-const micStatus = document.getElementById('micStatus');
-
-// Нашите тестови фрази
-const phrases = [
-    "Цигарите са гнусни и гадни.",
-    "Вкусът им е отвратителен и ме отблъсква.",
-    "Аз дишам с лекота и удоволствие."
-];
-
-// Функция за изчакване (Пауза)
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-startBtn.addEventListener('click', async () => {
-    // 1. Скриваме бутона
-    startBtn.style.display = 'none';
-    micStatus.textContent = '🔴 Записът започна...';
-    micStatus.style.color = '#ff0055';
+// 2. ГЕНЕРАТОР НА ЧЕСТОТИ (За Райф и Солфеджо)
+function playRife(freq, name) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
-    // 2. Стартираме Караокето
-    for (let i = 0; i < phrases.length; i++) {
-        // Скриваме стария текст
-        promptText.style.opacity = 0;
-        await sleep(500); // чакаме половин секунда да изчезне
-        
-        // Показваме новото изречение
-        promptText.innerHTML = phrases[i];
-        promptText.style.opacity = 1;
-        
-        // Време за четене (4 секунди)
-        await sleep(4000); 
-        
-        // Скриваме го и показваме ПАУЗА
-        promptText.style.opacity = 0;
-        await sleep(500);
-        promptText.innerHTML = "<span style='color: #00ff66; font-size: 1rem;'>[ Пауза... Поеми въздух ]</span>";
-        promptText.style.opacity = 1;
-        
-        // Време за паузата (3 секунди)
-        await sleep(3000);
-    }
+    // Спираме стария звук, ако има такъв
+    if (mainOscillator) mainOscillator.stop();
 
-    // 3. Край на записа
-    promptText.style.opacity = 0;
-    await sleep(500);
-    promptText.innerHTML = "<span style='color: #00f3ff;'>✅ Записът приключи. Генериране на протокол...</span>";
-    promptText.style.opacity = 1;
-    micStatus.textContent = 'Обработка...';
-});
+    mainOscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    // За Райф честоти често се ползва Square wave (правоъгълна), за по-силен ефект
+    mainOscillator.type = freq < 100 ? 'sine' : 'square'; 
+    mainOscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); // Сила 10%
+    
+    mainOscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    mainOscillator.start();
+    document.getElementById('rifeStatus').textContent = `Предаване: ${name} (${freq} Hz)`;
+    document.getElementById('rifeStatus').style.color = '#bc13fe';
+}
+
+// 3. ЧЕСТОТЕН СКЕНЕР (Анализатор)
+async function startScanner() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const source = audioCtx.createMediaStreamSource(stream);
+        analyzer = audioCtx.createAnalyser();
+        analyzer.fftSize = 2048;
+        source.connect(analyzer);
+
+        const bufferLength = analyzer.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        const canvas = document.getElementById('visualizerCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function draw() {
+            if (!isScannerRunning) return;
+            requestAnimationFrame(draw);
+            analyzer.getByteFrequencyData(dataArray);
+
+            // Намиране на най-силната честота
+            let maxVal = 0;
+            let maxIndex = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                if (dataArray[i] > maxVal) {
+                    maxVal = dataArray[i];
+                    maxIndex = i;
+                }
+            }
+            const frequency = maxIndex * audioCtx.sampleRate / analyzer.fftSize;
+            if (maxVal > 100) {
+                document.getElementById('detectedFreq').textContent = Math.round(frequency);
+                updateFreqInfo(frequency);
+            }
+
+            // Визуализация на вълните
+            ctx.fillStyle = '#05070a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#00f3ff';
+            ctx.beginPath();
+            let sliceWidth = canvas.width / bufferLength;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                let v = dataArray[i] / 128.0;
+                let y = v * canvas.height / 2;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                x += sliceWidth;
+            }
+            ctx.stroke();
+        }
+        isScannerRunning = true;
+        draw();
+    } catch (err) {
+        alert("Грешка при стартиране на скенера: " + err);
+    }
+}
+
+function updateFreqInfo(f) {
+    const info = document.getElementById('freqInfo');
+    if (f > 520 && f < 535) info.textContent = "🧬 ДНК Регенерация / Солфеджо 528Hz";
+    else if (f > 430 && f < 435) info.textContent = "🌍 Честота на Вселената 432Hz";
+    else if (f < 10) info.textContent = "🧠 Тета/Делта състояние (Дълбок сън)";
+    else info.textContent = "Засечена активна вибрация...";
+}
+
+document.getElementById('startScannerBtn').addEventListener('click', startScanner);
+
+// Навигация за Овърлея
+function startProtocol(id) { document.getElementById('recordingOverlay').classList.remove('hidden'); }
+function closeOverlay() { document.getElementById('recordingOverlay').classList.add('hidden'); }
