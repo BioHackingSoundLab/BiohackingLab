@@ -5,78 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioHacking Sound Lab</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        
         <header class="header">
-            <h1 class="logo-text">BioHacking <span class="neon-blue">Sound Lab</span>&trade;</h1>
-            <p class="subtitle">Upgrade Your Life</p>
+            <h1 class="logo-text">BioHacking <span class="neon-blue">Sound Lab</span></h1>
         </header>
 
-        <div id="dashboard" class="view-section active">
-            
-            <div class="intro-box">
-                <h2>Открий своята <span class="neon-green">Невро-свобода</span></h2>
-                <p>Твоето подсъзнание се препрограмира най-добре с твоя собствен глас. Ние не използваме изкуствен интелект. Използваме най-мощния инструмент във Вселената – твоите гласови вибрации, смесени с Тета вълни, за да пренапишем старите навици.</p>
-            </div>
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="switchTab('lab')">ПРОТОКОЛИ</button>
+            <button class="nav-btn" onclick="switchTab('rife')">РАЙФ</button>
+            <button class="nav-btn" onclick="switchTab('scanner')">СКЕНЕР</button>
+        </nav>
 
-            <h3 class="section-title">Твоите Протоколи</h3>
-            
-            <div class="modules-grid">
-                <div class="module-card unlocked" onclick="openModule('smoking')">
-                    <div class="module-icon">🚭</div>
-                    <div class="module-info">
-                        <h4>Спиране на цигари</h4>
-                        <p>Изчисти навика завинаги</p>
-                    </div>
-                    <div class="module-status">СТАРТ</div>
+        <main class="content-area">
+            <section id="lab-tab" class="tab-content active">
+                <div class="intro-box">
+                    <h2>Невро-Програмиране</h2>
+                    <p>Смеси своя глас с Тета вълни и музика за дълбока промяна.</p>
                 </div>
-
-                <div class="module-card locked">
-                    <div class="module-icon">🍷</div>
-                    <div class="module-info">
-                        <h4>Контрол над алкохола</h4>
-                        <p>Прекъсни зависимостта</p>
+                <div class="modules-grid" id="protocolsList">
+                    <div class="module-card unlocked" onclick="startProtocol('smoking')">
+                        <div class="module-info">
+                            <h4>Спиране на цигари</h4>
+                            <p>Тета (4Hz) + 528Hz</p>
+                        </div>
+                        <span class="status-icon">▶</span>
                     </div>
-                    <div class="module-status">🔒 19 лв.</div>
                 </div>
+            </section>
 
-                <div class="module-card locked">
-                    <div class="module-icon">⚡</div>
-                    <div class="module-info">
-                        <h4>Здраве и Енергия</h4>
-                        <p>Клетъчно възстановяване</p>
+            <section id="rife-tab" class="tab-content">
+                <div class="rife-grid">
+                    <button class="rife-card" onclick="playRife(432, 'Detox')">
+                        <span>🧬</span> <h4>Детокс</h4> <small>432 Hz</small>
+                    </button>
+                    <button class="rife-card" onclick="playRife(528, 'DNA Repair')">
+                        <span>✨</span> <h4>ДНК Ремонт</h4> <small>528 Hz</small>
+                    </button>
+                    <button class="rife-card" onclick="playRife(783, 'Schumann')">
+                        <span>🌍</span> <h4>Шуман</h4> <small>7.83 Hz</small>
+                    </button>
+                </div>
+                <div id="rifeStatus" class="rife-monitor">Избери програма</div>
+            </section>
+
+            <section id="scanner-tab" class="tab-content">
+                <div class="scanner-container">
+                    <canvas id="visualizerCanvas"></canvas>
+                    <div class="frequency-display">
+                        <span id="detectedFreq">0</span> <small>Hz</small>
                     </div>
-                    <div class="module-status">🔒 19 лв.</div>
+                    <p id="freqInfo">Тишина в лабораторията...</p>
+                    <button class="btn neon-btn" id="startScannerBtn">ПУСНИ СКЕНЕРА</button>
+                </div>
+            </section>
+        </main>
+
+        <div id="recordingOverlay" class="overlay hidden">
+            <div class="overlay-content">
+                <button class="close-btn" onclick="closeOverlay()">✕</button>
+                <div id="karaokeText" class="prompt-text">Подготовка...</div>
+                <canvas id="micVisualizer"></canvas>
+                <div class="controls">
+                    <button class="btn neon-btn" id="recordBtn">СТАРТ</button>
                 </div>
             </div>
         </div>
-
-        <div id="recordingStudio" class="view-section hidden">
-            <button class="back-btn" onclick="goBack()">🔙 Назад към модулите</button>
-            
-            <h2 id="currentModuleName" class="neon-blue">Спиране на цигари</h2>
-            
-            <div class="calibration-zone">
-                <div class="status-indicator yellow" id="micStatus">Натисни "Старт", за да тестваме стаята...</div>
-            </div>
-
-            <div class="karaoke-zone">
-                <div class="prompt-text" id="promptText">
-                    Приготви се. Прочети текста, който ще се появи тук, бавно и ясно.
-                </div>
-                <div class="timer" id="timerDisplay"></div>
-            </div>
-
-            <div class="controls">
-                <button class="btn neon-btn" id="startBtn">ЗАПОЧНИ ЗАПИС</button>
-            </div>
-        </div>
-
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
