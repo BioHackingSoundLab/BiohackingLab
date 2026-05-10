@@ -1,3 +1,14 @@
+// Навигация между екраните
+function openModule(moduleId) {
+    document.getElementById('dashboard').classList.remove('active');
+    document.getElementById('recordingStudio').classList.add('active');
+}
+
+function goBack() {
+    document.getElementById('recordingStudio').classList.remove('active');
+    document.getElementById('dashboard').classList.add('active');
+    // Тук по-късно ще добавим код, който спира микрофона, ако се върнеш назад
+}
 const startBtn = document.getElementById('startBtn');
 const micStatus = document.getElementById('micStatus');
 const promptText = document.getElementById('promptText');
